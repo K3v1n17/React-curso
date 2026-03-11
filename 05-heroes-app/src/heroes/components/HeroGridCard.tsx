@@ -66,28 +66,28 @@ export const HeroGridCard = () => {
                     <Zap className="h-3 w-3 text-orange-500" />
                     <span className="text-xs font-medium">Strength</span>
                   </div>
-                  <Progress value={100} className="h-2" />
+                  <Progress value={50} className="h-2" activeColor='bg-orange-500' />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-1">
                     <Brain className="h-3 w-3 text-blue-500" />
                     <span className="text-xs font-medium">Intelligence</span>
                   </div>
-                  <Progress value={80} className="h-2" />
+                  <Progress value={80} className="h-2" activeColor='bg-blue-500' />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-1">
                     <Gauge className="h-3 w-3 text-green-500" />
                     <span className="text-xs font-medium">Speed</span>
                   </div>
-                  <Progress value={90} className="h-2" />
+                  <Progress value={90} className="h-2" activeColor='bg-green-500' />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-1">
                     <Shield className="h-3 w-3 text-purple-500" />
                     <span className="text-xs font-medium">Durability</span>
                   </div>
-                  <Progress value={100} className="h-2" />
+                  <Progress value={100} className="h-2" activeColor='bg-purple-500' />
                 </div>
               </div>
 
