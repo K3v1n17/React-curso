@@ -24,10 +24,11 @@ import { CustomJumbotron } from "@/components/custom/CustomJumbotron";
 import { HeroStats } from "@/heroes/components/HeroStats";
 import { HeroGrid } from "@/heroes/components/HeroGrid";
 import { CustomPagination } from "@/components/custom/CustomPagination";
+import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs";
 
 export const HomePage = () => {
 
-  const [activeTab, setActiveTab] = useState <"all" | "favorites" | "heroes" | "villains">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "favorites" | "heroes" | "villains">("all");
 
   return (
     <>
@@ -37,21 +38,23 @@ export const HomePage = () => {
           title="Universo de superheores"
           description="Discover, explore, and manage your favorite superheroes and villains"
         />
+
+        <CustomBreadcrumbs currentPage="Super Heroes" />
         {/* Stats Dashboard */}
         <HeroStats />
 
         {/* Tabs */}
-        <Tabs value={activeTab}  className="mb-8">
+        <Tabs value={activeTab} className="mb-8">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all" onClick={ () => setActiveTab('all')} >All Characters (16)</TabsTrigger>
-            <TabsTrigger value="favorites"  onClick={() => setActiveTab('favorites')} className="flex items-center gap-2">
-              
+            <TabsTrigger value="all" onClick={() => setActiveTab('all')} >All Characters (16)</TabsTrigger>
+            <TabsTrigger value="favorites" onClick={() => setActiveTab('favorites')} className="flex items-center gap-2">
+
               Favorites (3)
             </TabsTrigger>
-            <TabsTrigger value="heroes"  onClick={() => setActiveTab('heroes')}>
+            <TabsTrigger value="heroes" onClick={() => setActiveTab('heroes')}>
               Heroes (12)
             </TabsTrigger>
-            <TabsTrigger value="villains"  onClick={() => setActiveTab('villains')}>
+            <TabsTrigger value="villains" onClick={() => setActiveTab('villains')}>
               Villains (2)
             </TabsTrigger>
           </TabsList>
@@ -62,22 +65,22 @@ export const HomePage = () => {
           </TabsContent>
 
           <TabsContent value="favorites">
-           {/* Mostrar todos los favoritos */}
+            {/* Mostrar todos los favoritos */}
             <h1>Favorites</h1>
             <HeroGrid />
 
           </TabsContent>
 
           <TabsContent value="heroes">
-           
-           {/* Mostrar todos los heroes */}
+
+            {/* Mostrar todos los heroes */}
             <h1>Heroes</h1>
             <HeroGrid />
 
           </TabsContent>
 
           <TabsContent value="villains">
-           {/* Mostrar todos los villanos */}
+            {/* Mostrar todos los villanos */}
             <h1>Villanos</h1>
             <HeroGrid />
 
@@ -85,7 +88,7 @@ export const HomePage = () => {
         </Tabs>
 
         {/* Pagination */}
-         <CustomPagination totalPages={8}/>
+        <CustomPagination totalPages={8} />
       </>
     </>
   );

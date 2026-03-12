@@ -1,3 +1,5 @@
+import { CustomBreadcrumbs } from '@/components/custom/CustomBreadcrumbs'
+import { CustomMenu } from '@/components/custom/CustomMenu'
 import React from 'react'
 import { Link, Outlet } from 'react-router'
 
@@ -5,9 +7,10 @@ export const HeroesLayout = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       <div className="max-w-7xl mx-auto p-6">
+        <CustomMenu />
         <Outlet />
-      </div>      
+      </div>
     </div>
-   
+
   )
 }
