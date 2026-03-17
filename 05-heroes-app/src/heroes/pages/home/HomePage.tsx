@@ -25,8 +25,25 @@ import { HeroStats } from "@/heroes/components/HeroStats";
 import { HeroGrid } from "@/heroes/components/HeroGrid";
 import { CustomPagination } from "@/components/custom/CustomPagination";
 import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs";
+import { getHeroesByPageAction } from "@/heroes/actions/get-heores-by-page";
+import { useQuery } from "@tanstack/react-query";
 
 export const HomePage = () => {
+
+  // useEffect(() => {
+  //   getHeroesByPage().then()
+  // }, [])
+
+  const { data } = useQuery(
+    {
+      queryKey: ['heroes'],
+      queryFn: () => getHeroesByPageAction(),
+      staleTime: 1000 * 60 * 5, // 5 minutos
+    }
+
+  )
+
+  console.log({ data })
 
   const [activeTab, setActiveTab] = useState<"all" | "favorites" | "heroes" | "villains">("all");
 

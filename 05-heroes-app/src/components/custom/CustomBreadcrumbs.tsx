@@ -1,5 +1,4 @@
-import React from 'react'
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '../ui/breadcrumb'
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from '../ui/breadcrumb'
 import { Link } from 'react-router'
 
 interface Breadcrumb {
@@ -7,9 +6,6 @@ interface Breadcrumb {
     to: string;
 
 }
-
-
-
 
 interface Props {
     currentPage: string;
@@ -29,9 +25,21 @@ export const CustomBreadcrumbs = ({ currentPage, breadcrumbs = [] }: Props) => {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
 
-                {breadcrumbs.map(
+                {breadcrumbs.map((crumb, index) => (
+                    <BreadcrumbItem key={`${crumb.to}-${index}`}>
+                        <BreadcrumbLink asChild>
+                            <Link to={crumb.to}>
+                                {crumb.label}
+                            </Link>
+                        </BreadcrumbLink>
+                        <BreadcrumbSeparator />
+                    </BreadcrumbItem>
+                ))}
+
+
+                {/* {breadcrumbs.map(
                     (crumb) => (
-                        <div>
+                        <div key={crumb.to}>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
                                     <Link to={crumb.to}>
@@ -43,10 +51,8 @@ export const CustomBreadcrumbs = ({ currentPage, breadcrumbs = [] }: Props) => {
 
                         </div>
                     )
-
-
                 )
-                }
+                } */}
 
                 <BreadcrumbItem>
                     <BreadcrumbLink className='text-black'> {currentPage}</BreadcrumbLink>
