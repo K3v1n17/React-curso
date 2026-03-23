@@ -1,7 +1,19 @@
-import React from 'react'
+import { CustomPagination } from '@/components/custom/CustomPagination'
+import { CustomJumbotron } from '@/shop/components/CustomJumbotron'
 
 export const HomePage = () => {
-    return (
-        <div>HomePage</div>
-    )
+    return <>
+        <CustomJumbotron title={'Todos los productos'} subTitle={''} />
+
+
+
+
+
+
+
+
+        <CustomPagination totalPages={5} />
+    </>
+
+
 }
