@@ -1,8 +1,18 @@
 import { RouterProvider } from 'react-router'
 import { Approuter } from './app.router'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import {Toaster} from 'sonner'
+
+const queryClient = new QueryClient()
 
 export const TesloShopApp = () => {
     return (
-        <RouterProvider router={Approuter} />
+        
+        <QueryClientProvider client={queryClient}>
+          <Toaster/>
+              <RouterProvider router={Approuter} />
+         <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
     )
 }

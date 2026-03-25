@@ -8,6 +8,7 @@ import { DashboardPage } from "./admin/pages/dashboard/DashboardPage";
 import { AdminProductPage } from "./admin/pages/product/AdminProductPage";
 import { AdminProductsPage } from "./admin/pages/products/AdminProductsPage";
 import { lazy } from "react";
+import { GenderPage } from "./shop/pages/gender/GenderPage";
 
 const AuthLayout = lazy(() => import('@/auth/layouts/AuthLayout'));
 const AdminLayout = lazy(() => import('@/admin/layouts/AdminLayout'));
@@ -32,7 +33,7 @@ export const Approuter = createBrowserRouter(
                 },
                 {
                     path: 'gender/:gender',
-                    element: <HomePage />
+                    element: <GenderPage />
                 }
             ]
         },
