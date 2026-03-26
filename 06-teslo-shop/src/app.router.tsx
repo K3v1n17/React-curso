@@ -9,85 +9,90 @@ import { AdminProductPage } from "./admin/pages/product/AdminProductPage";
 import { AdminProductsPage } from "./admin/pages/products/AdminProductsPage";
 import { lazy } from "react";
 import { GenderPage } from "./shop/pages/gender/GenderPage";
+import {
+  AdminRoute,
+  NotAuthenticatedRoute,
+} from "./components/routes/ProtectedRoutes";
 
-const AuthLayout = lazy(() => import('@/auth/layouts/AuthLayout'));
-const AdminLayout = lazy(() => import('@/admin/layouts/AdminLayout'));
+const AuthLayout = lazy(() => import("@/auth/layouts/AuthLayout"));
+const AdminLayout = lazy(() => import("@/admin/layouts/AdminLayout"));
 
+export const Approuter = createBrowserRouter([
+  // main routes
+  {
+    path: "/",
+    element: <ShopLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "product/:idslug",
+        element: <ProductPage />,
+      },
+      {
+        path: "gender/:gender",
+        element: <GenderPage />,
+      },
+    ],
+  },
 
+  // Auth routes    //! una ruta hija no puede tener path
+  {
+    path: "/auth",
+    element: (
+      <NotAuthenticatedRoute>
+        <AuthLayout />
+      </NotAuthenticatedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/auth/login" />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
 
-export const Approuter = createBrowserRouter(
-    [
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
+    ],
+  },
 
-        // main routes 
-        {
-            path: "/",
-            element: <ShopLayout />,
-            children: [
-                {
-                    index: true,
-                    element: <HomePage />
-                },
-                {
-                    path: "product/:idslug",
-                    element: <ProductPage />
-                },
-                {
-                    path: 'gender/:gender',
-                    element: <GenderPage />
-                }
-            ]
-        },
+  // Admin routes
+  {
+    path: "/admin",
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
 
-        // Auth routes    //! una ruta hija no puede tener path 
-        {
-            path: '/auth',
-            element: <AuthLayout />,
-            children: [
-                {
-                    index: true,
-                    element: <Navigate to="/auth/login" />
-
-                },
-                {
-
-                    path: 'login',
-                    element: <LoginPage />
-                },
-
-                {
-
-                    path: 'login',
-                    element: <LoginPage />
-                },
-                {
-                    path: 'register',
-                    element: <RegisterPage />
-                },
-            ]
-        },
-
-        // Admin routes
-        {
-            path: '/admin',
-            element: <AdminLayout />,
-            children: [
-                {
-                    index: true,
-                    element: <DashboardPage />
-                },
-                {
-                    path: 'products',
-                    element: <AdminProductsPage />
-                },
-                {
-                    path: 'products/:id',
-                    element: <AdminProductPage />
-                },
-            ]
-        },
-        {
-            path: '*',
-            element: <Navigate to="/" />
-        }
-
-    ])
+    children: [
+      {
+        index: true,
+        element: <DashboardPage />,
+      },
+      {
+        path: "products",
+        element: <AdminProductsPage />,
+      },
+      {
+        path: "products/:id",
+        element: <AdminProductPage />,
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" />,
+  },
+]);
