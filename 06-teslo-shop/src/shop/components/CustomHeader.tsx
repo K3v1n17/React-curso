@@ -8,11 +8,11 @@ import { CustomLogo } from "@/components/custom/CustomLogo";
 import { useAuthStore } from "@/auth/store/auth.store";
 
 export const CustomHeader = () => {
-  const { user ,logout} = useAuthStore();
+  const { user, logout } = useAuthStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const { gender } = useParams();
 
-  console.log({ gender });
+  // console.log({ gender });
   const inputRef = useRef<HTMLInputElement>(null);
   const query = searchParams.get("query") || ""; // obtenemos el valor del parametro de busqueda "search" , si no existe , lo establecemos como una cadena vacia
 
@@ -104,10 +104,10 @@ export const CustomHeader = () => {
                 </Button>
               </Link>
             ) : (
-                <Button variant="outline" size="sm" className=" ml-2" 
+              <Button variant="outline" size="sm" className=" ml-2"
                 onClick={logout}>
-                  Cerrar Sesion
-                </Button>
+                Cerrar Sesion
+              </Button>
             )}
 
             <Link to="/admin">

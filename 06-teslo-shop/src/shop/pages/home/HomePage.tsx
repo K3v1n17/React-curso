@@ -5,13 +5,13 @@ import { useProduct } from '@/shop/hooks/useProduct'
 
 export const HomePage = () => {
 
-   const {data} = useProduct()
+    const { data } = useProduct()
 
-     console.log({data})
+    //  console.log({data})
 
     return <>
         <CustomJumbotron title={'Todos los productos'} subTitle={''} />
-         <ProductsGrid products={data?.products || []}/>
+        <ProductsGrid products={data?.products || []} />
         <CustomPagination totalPages={data?.pages || 0} />
     </>
 
