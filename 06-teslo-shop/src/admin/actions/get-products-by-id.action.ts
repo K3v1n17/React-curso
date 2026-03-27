@@ -7,7 +7,7 @@ export const getProductsByIdAction = async (id: string): Promise<Product> => {
     if (id === 'new')  
         { 
           return {
-            id: '',
+            id: 'new',
             title: '',
             description: '',
             price: 0,

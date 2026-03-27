@@ -4,19 +4,21 @@ import type { Product, Size } from "@/interfaces/product.interface";
 import { X, SaveAll, Tag, Upload, Plus } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link } from "react-router";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 interface Props {
   title: string;
   subTitle: string;
   product: Product;
+  isPending: boolean;
+
+  //Methods
+  onSubmit: (productLike: Partial<Product>) => void;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subTitle, product }: Props) => {
-  console.log({ product });
-
+export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: Props) => {
   const [dragActive, setDragActive] = useState(false);
 
   const {
@@ -30,6 +32,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
     defaultValues: product,
   });
 
+  const [files , setFiles] = useState<File[]>([]);
 
   const labelInputRef = useRef<HTMLInputElement>(null);
   const selectedSizes = watch("sizes");
@@ -46,7 +49,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
     setValue('tags', Array.from(newtagSet));
 
   }
-    ;
+   
 
   const removeTag = (tagToRemove: string) => {
     const newtagSet = new Set(getValues('tags'));
@@ -82,33 +85,33 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
     e.stopPropagation();
     setDragActive(false);
     const files = e.dataTransfer.files;
-    console.log(files);
+    if (!files) return;
+    setFiles(prev => [...prev, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(files);
+    if (!files) return;
+
+    setFiles(prev => [...prev, ...Array.from(files)]);
+   
   };
 
-  /// Todo : remover en un futuro
 
-  const onSubmit = (productlike: Product) => {
-    console.log("onsubmit", productlike);
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center">
         <AdminTitle title={title} subtitle={subTitle} />
         <div className="flex justify-end mb-10 gap-4">
-          <Button variant="outline">
+          <Button type="button" variant="outline">
             <Link to="/admin/products" className="flex items-center gap-2">
               <X className="w-4 h-4" />
               Cancelar
             </Link>
           </Button>
 
-          <Button>
+          <Button type="submit" disabled={isPending}>
             <SaveAll className="w-4 h-4" />
             Guardar cambios
           </Button>
@@ -292,6 +295,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     >
                       {size}
                       <button
+                       type="button"
                         onClick={() => removeSize(size)}
                         className="cursor-pointer ml-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                       >
@@ -339,6 +343,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                       <Tag className="h-3 w-3 mr-1" />
                       {tag}
                       <button
+                        type ="button"
                         onClick={() => removeTag(tag)}
                         className="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
                       >
@@ -352,10 +357,6 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                   <input
                     ref={labelInputRef}
                     type="text"
-
-                    // value={newTag}
-                    // onChange={(e) => setNewTag(e.target.value)}
-                    // onKeyDown={(e) => e.key === 'Enter' && addTag()}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ' || e.key === ',') {
                         e.preventDefault();
@@ -444,6 +445,32 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                       </p>
                     </div>
                   ))}
+                </div>
+              </div>
+
+
+
+              {/* imagenes por cargar  */}
+
+                 <div className= {
+                  cn("mt-6 space-y-3" , {
+                    'hidden' : files.length === 0
+                  })
+                 }>
+                <h3 className="text-sm font-medium text-slate-700">
+                  Imágenes actuales
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {
+                    files.map(( file , index) => (
+                      <img 
+                      src ={URL.createObjectURL(file)}
+                      alt="preview"
+                      key = {index}
+                      className="w-full h-full object-cover rounded-lg"
+                      />
+                    )) 
+                  }
                 </div>
               </div>
             </div>
