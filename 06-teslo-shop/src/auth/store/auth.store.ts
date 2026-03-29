@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   /// Getters
   isAdmin: () => {
     const roles = get().user?.roles || [];
-    return roles.includes("admin"); 
+    return roles.includes("admin");
   },
 
 
@@ -54,13 +54,13 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       return false;
     }
   },
-    
 
 
-register : async (name: string, email: string, password: string) => {
+
+  register: async (name: string, email: string, password: string) => {
     try {
-      const data = await registerAction(name , email, password);
-      
+      const data = await registerAction(name, email, password);
+
       localStorage.setItem("token", data.token);
       set({ user: data.user, token: data.token, authStatus: "authenticated" });
       return true;
@@ -69,9 +69,9 @@ register : async (name: string, email: string, password: string) => {
       set({ user: null, token: null, authStatus: "not-authenticated" });
       return false;
     }
-  }, 
+  },
 
-  
+
   logout: () => {
     localStorage.removeItem("token");
     set({ user: null, token: null, authStatus: "not-authenticated" });
@@ -82,7 +82,7 @@ register : async (name: string, email: string, password: string) => {
     try {
       const { user, token } = await checkAuthAction();
       set({ user: user, token: token, authStatus: "authenticated" });
-      console.log({ user, token });
+      // console.log({ user, token });
       return true;
     } catch (error) {
       localStorage.removeItem("token");

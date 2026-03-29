@@ -22,30 +22,29 @@ export const AdminProductPage = () => {
       ? "Aquí puedes crear un nuevo producto."
       : "Aquí puedes editar el producto.";
 
-   const handleSubmit = async( productLike : Partial<Product>) => 
-    {
+  const handleSubmit = async (productLike: Partial<Product> & { files?: File[] }) => {
 
-      await mutation.mutateAsync(productLike , 
-        {
-          onSuccess: (data) => {
-            toast.success('Producto actualizado o creado correctamente' , 
-              {
-                position: 'top-right',
-              })
-              navigate(`/admin/products/${data.id}`)
-          },
-          onError: (error) => {
-            toast.error('Error al actualizar el producto' ,
-              {
-                position: 'top-right',
-              })
-          } 
+    await mutation.mutateAsync(productLike,
+      {
+        onSuccess: (data) => {
+          toast.success('Producto actualizado o creado correctamente',
+            {
+              position: 'top-right',
+            })
+          navigate(`/admin/products/${data.id}`)
+        },
+        onError: (error) => {
+          toast.error('Error al actualizar el producto',
+            {
+              position: 'top-right',
+            })
         }
-      )
-    }
+      }
+    )
+  }
 
 
-   const isPending = mutation.isPending
+  const isPending = mutation.isPending
 
   if (isError) {
     return <Navigate to="/admin/products" />;

@@ -2,10 +2,12 @@ import { AdminTitle } from "@/admin/components/AdminTitle";
 import { Button } from "@/components/ui/button";
 import type { Product, Size } from "@/interfaces/product.interface";
 import { X, SaveAll, Tag, Upload, Plus } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { set, useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
+
+
 interface Props {
   title: string;
   subTitle: string;
@@ -13,12 +15,19 @@ interface Props {
   isPending: boolean;
 
   //Methods
-  onSubmit: (productLike: Partial<Product>) => void;
+  onSubmit: (productLike: Partial<Product> & { files?: File[] }) => void;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: Props) => {
+
+interface FormInputs extends Product {
+  files?: File[];
+
+}
+
+
+export const ProductForm = ({ title, subTitle, product, onSubmit, isPending }: Props) => {
   const [dragActive, setDragActive] = useState(false);
 
   const {
@@ -28,11 +37,21 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
     getValues,
     setValue,
     watch,
-  } = useForm({
+  } = useForm<FormInputs>({
     defaultValues: product,
   });
 
-  const [files , setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    setFiles([]);
+  }, [product])
+
+
+
+
+
+
 
   const labelInputRef = useRef<HTMLInputElement>(null);
   const selectedSizes = watch("sizes");
@@ -49,7 +68,7 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
     setValue('tags', Array.from(newtagSet));
 
   }
-   
+
 
   const removeTag = (tagToRemove: string) => {
     const newtagSet = new Set(getValues('tags'));
@@ -87,6 +106,9 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
     const files = e.dataTransfer.files;
     if (!files) return;
     setFiles(prev => [...prev, ...Array.from(files)]);
+
+    const currentFiles = getValues('files') || []
+    setValue('files', [...currentFiles, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +116,8 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
     if (!files) return;
 
     setFiles(prev => [...prev, ...Array.from(files)]);
-   
+    const currentFiles = getValues('files') || []
+    setValue('files', [...currentFiles, ...Array.from(files)]);
   };
 
 
@@ -295,7 +318,7 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
                     >
                       {size}
                       <button
-                       type="button"
+                        type="button"
                         onClick={() => removeSize(size)}
                         className="cursor-pointer ml-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                       >
@@ -343,7 +366,7 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
                       <Tag className="h-3 w-3 mr-1" />
                       {tag}
                       <button
-                        type ="button"
+                        type="button"
                         onClick={() => removeTag(tag)}
                         className="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
                       >
@@ -452,24 +475,24 @@ export const ProductForm = ({ title, subTitle, product, onSubmit , isPending }: 
 
               {/* imagenes por cargar  */}
 
-                 <div className= {
-                  cn("mt-6 space-y-3" , {
-                    'hidden' : files.length === 0
-                  })
-                 }>
+              <div className={
+                cn("mt-6 space-y-3", {
+                  'hidden': files.length === 0
+                })
+              }>
                 <h3 className="text-sm font-medium text-slate-700">
-                  Imágenes actuales
+                  Imágenes por cargar
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   {
-                    files.map(( file , index) => (
-                      <img 
-                      src ={URL.createObjectURL(file)}
-                      alt="preview"
-                      key = {index}
-                      className="w-full h-full object-cover rounded-lg"
+                    files.map((file, index) => (
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt="preview"
+                        key={index}
+                        className="w-full h-full object-cover rounded-lg"
                       />
-                    )) 
+                    ))
                   }
                 </div>
               </div>
